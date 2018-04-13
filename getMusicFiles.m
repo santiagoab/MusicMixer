@@ -1,0 +1,21 @@
+function [listing,folder] = getMusicFiles()
+selpath = uigetdir;
+%contents(3).name;
+folder = [selpath '\']; %Add needed \ to path
+listing = dir(selpath);
+
+inds = [];
+n    = 0;
+k    = 1;
+
+while n < 2 && k <= length(listing)
+    if any(strcmp(listing(k).name, {'.', '..'}))
+        inds(end + 1) = k;
+        n = n + 1;
+    end
+    k = k + 1;
+end
+
+listing(inds) = [];
+
+end

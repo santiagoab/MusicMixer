@@ -1,5 +1,5 @@
 function features = computeFeatures(dir)
-%%TO DO -change descriptors->features / Add features / save all features
+%%TO DO  Add features / save all features
 
 %% Initial variables
 startbpm = 120;
@@ -12,15 +12,15 @@ if n == 2
 end
     
 %% Beat times 
-descriptors.beatPos = beat2(waveIn,sr); %beat2
-beatDuration=descriptors.beatPos(2:end)-descriptors.beatPos(1:end-1);
+features.beatPos = beat2(waveIn,sr); %beat2
+beatDuration=features.beatPos(2:end)-features.beatPos(1:end-1);
 bpm=1/mean(beatDuration)*60;
 ratio=max(bpm,startbpm)/min(bpm,startbpm);
 if(ratio>1.5) %set bpm to half
-    descriptors.beatPos=descriptors.beatPos(1:2:end);
-    beatDuration=descriptors.beatPos(2:end)-descriptors.beatPos(1:end-1);
+    features.beatPos=features.beatPos(1:2:end);
+    beatDuration=features.beatPos(2:end)-features.beatPos(1:end-1);
 end
-descriptors.beatDuration=[beatDuration beatDuration(end)];
+features.beatDuration=[beatDuration beatDuration(end)];
 
 %% Chroma features
 fftlen = 2 ^ (round(log(sr*(2048/22050))/log(2)));
@@ -30,23 +30,29 @@ f_sd = 1;
 chromaF = chromagram_IF(waveIn,sr,fftlen,nbin,f_ctr,f_sd);
 ffthop = fftlen/4;
 sgsrate = sr/ffthop;
-descriptors.bsChromaF = beatavg(chromaF,descriptors.beatPos*sgsrate);
+features.bsChromaF = beatavg(chromaF,features.beatPos*sgsrate);
 %imagesc(descriptors.bsChromaF)
 %plot(descriptors.bsChromaF(1,:))
 
 %% MFCC and energy
 [cepstra,aspectrum,pspectrum] = melfcc(waveIn, sr, 'wintime', fftlen/sr, 'hoptime', ffthop/sr, 'numcep', 12); %careful here, there are two melfcc functions in my path. Use that of labrosa/rastamaa
 %imagesc(cepstra);
-descriptors.bsMFCC = beatavg(cepstra,descriptors.beatPos*sgsrate);
+features.bsMFCC = beatavg(cepstra,features.beatPos*sgsrate);
 
 %% compute RMS energy
-descriptors.energyTime=energyT(waveIn, fftlen, ffthop);
-descriptors.energyStart=descriptors.energyTime(round(descriptors.beatPos*sr/ffthop));
+features.energyTime=energyT(waveIn, fftlen, ffthop);
+
+% Eliminate 0 or neg values (error algunas canciones)
+%for idx = find(features.energyTime==0)
+%   features.energyTime(idx) = 0.00000001;
+%end
+
+features.energyStart=features.energyTime(round(features.beatPos*sr/ffthop));
 
 %% metrical position
-descriptors.metricalPos=ones(length(descriptors.energyStart),1);
+features.metricalPos=ones(length(features.energyStart),1);
 for i=1:4
-    descriptors.metricalPos(i:4:end)=i;
+    features.metricalPos(i:4:end)=i;
 end
 
 end

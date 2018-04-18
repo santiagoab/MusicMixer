@@ -81,6 +81,8 @@ function browseButton_Callback(hObject, eventdata, handles)
 [listing, folder] = getMusicFiles();
 assignin('base','songs',listing) %save var to base workspace
 assignin('base','folder',folder)
+features = doToSongs(folder,listing);
+assignin('base','features',features)
 
 
 

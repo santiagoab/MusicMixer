@@ -1,7 +1,7 @@
 function [listing,folder] = getMusicFiles()
 selpath = uigetdir;
 %contents(3).name;
-folder = [selpath '\']; %Add needed \ to path
+folder = [selpath filesep]; %Add needed \ to path
 listing = dir(selpath);
 
 inds = [];

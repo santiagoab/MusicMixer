@@ -1,16 +1,18 @@
-function features = computeFeatures(dir)
+function features = computeFeatures(folder,song)
 %%TO DO  Add features / save all features
 
 %% Initial variables
 startbpm = 120;
+dir = [folder song];
 [waveIn,sr] = audioread(dir);
+features.name = song;
 
 %% Convert stereo to mono
 [m,n] = size(waveIn);
 if n == 2
    waveIn = sum(waveIn, 2) / size(waveIn, 2); 
 end
-    
+features.wave = waveIn;  
 %% Beat times 
 features.beatPos = beat2(waveIn,sr); %beat2
 beatDuration=features.beatPos(2:end)-features.beatPos(1:end-1);
@@ -21,33 +23,27 @@ if(ratio>1.5) %set bpm to half
     beatDuration=features.beatPos(2:end)-features.beatPos(1:end-1);
 end
 features.beatDuration=[beatDuration beatDuration(end)];
-
+features.bpm = bpm;
 %% Chroma features
 fftlen = 2 ^ (round(log(sr*(2048/22050))/log(2)));
 nbin = 12;
 f_ctr = 1000; 
 f_sd = 1; 
-chromaF = chromagram_IF(waveIn,sr,fftlen,nbin,f_ctr,f_sd);
+%chromaF = chromagram_IF(waveIn,sr,fftlen,nbin,f_ctr,f_sd);
 ffthop = fftlen/4;
 sgsrate = sr/ffthop;
-features.bsChromaF = beatavg(chromaF,features.beatPos*sgsrate);
+%features.bsChromaF = beatavg(chromaF,features.beatPos*sgsrate);
 %imagesc(descriptors.bsChromaF)
 %plot(descriptors.bsChromaF(1,:))
 
 %% MFCC and energy
-[cepstra,aspectrum,pspectrum] = melfcc(waveIn, sr, 'wintime', fftlen/sr, 'hoptime', ffthop/sr, 'numcep', 12); %careful here, there are two melfcc functions in my path. Use that of labrosa/rastamaa
+%[cepstra,aspectrum,pspectrum] = melfcc(waveIn, sr, 'wintime', fftlen/sr, 'hoptime', ffthop/sr, 'numcep', 12); %careful here, there are two melfcc functions in my path. Use that of labrosa/rastamaa
 %imagesc(cepstra);
-features.bsMFCC = beatavg(cepstra,features.beatPos*sgsrate);
+%features.bsMFCC = beatavg(cepstra,features.beatPos*sgsrate);
 
 %% compute RMS energy
 features.energyTime=energyT(waveIn, fftlen, ffthop);
-
-% Eliminate 0 or neg values (error algunas canciones)
-%for idx = find(features.energyTime==0)
-%   features.energyTime(idx) = 0.00000001;
-%end
-
-features.energyStart=features.energyTime(round(features.beatPos*sr/ffthop));
+features.energyStart=features.energyTime(max(1,round(features.beatPos*sr/ffthop)));
 
 %% metrical position
 features.metricalPos=ones(length(features.energyStart),1);

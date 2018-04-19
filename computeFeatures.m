@@ -45,6 +45,12 @@ sgsrate = sr/ffthop;
 features.energyTime=energyT(waveIn, fftlen, ffthop);
 features.energyStart=features.energyTime(max(1,round(features.beatPos*sr/ffthop)));
 
+%% Energy power
+eng = features.energyTime;
+sv = eng.* eng;
+dp = sum(sv);     % suma de quadrados, producto escalar
+features.power = sqrt(dp);   % sqrt del producto escalar
+
 %% metrical position
 features.metricalPos=ones(length(features.energyStart),1);
 for i=1:4

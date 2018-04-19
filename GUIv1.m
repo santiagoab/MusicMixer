@@ -78,10 +78,10 @@ function browseButton_Callback(hObject, eventdata, handles)
 % hObject    handle to browseButton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[listing, folder] = getMusicFiles();
-assignin('base','songs',listing) %save var to base workspace
+[songs, folder] = getMusicFiles();
+assignin('base','songs',songs) %save var to base workspace
 assignin('base','folder',folder)
-features = doToSongs(folder,listing);
+features = doToSongs(folder,songs);
 assignin('base','features',features)
 
 

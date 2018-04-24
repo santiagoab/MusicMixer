@@ -1,13 +1,13 @@
-function sortedByEnergy = sortFeaturesEnergy(features)
+function sortedByBPM = sortFeaturesBPM(features)
 
 Afields = fieldnames(features);
 Acell = struct2cell(features);
 sz = size(Acell);
 Acell = reshape(Acell, sz(1), []);
 Acell = Acell';  
-Acell = sortrows(Acell, 3);
+Acell = sortrows(Acell, 5);
 Acell = reshape(Acell', sz);
-sortedByEnergy = cell2struct(Acell, Afields, 1);
+sortedByBPM = cell2struct(Acell, Afields, 1);
 
 end
   

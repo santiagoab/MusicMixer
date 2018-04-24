@@ -22,7 +22,7 @@ function varargout = GUIv1(varargin)
 
 % Edit the above text to modify the response to help GUIv1
 
-% Last Modified by GUIDE v2.5 12-Apr-2018 11:49:42
+% Last Modified by GUIDE v2.5 21-Apr-2018 21:02:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -79,10 +79,62 @@ function browseButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [songs, folder] = getMusicFiles();
+set(handles.dirText, 'String', folder);
 assignin('base','songs',songs) %save var to base workspace
 assignin('base','folder',folder)
 features = doToSongs(folder,songs);
 assignin('base','features',features)
+sortedByEnergy = sortFeaturesEnergy(features);
+assignin('base','sortedByEnergy',sortedByEnergy)
+sortedByBPM = sortFeaturesBPM(features);
+assignin('base','sortedByBPM',sortedByBPM)
 
 
+
+% --- Executes on selection change in popupmenu1.
+function popupmenu1_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu1
+
+
+% --- Executes on button press in Low.
+function Low_Callback(hObject, eventdata, handles)
+% hObject    handle to Low (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of Low
+
+
+% --- Executes on button press in Medium.
+function Medium_Callback(hObject, eventdata, handles)
+% hObject    handle to Medium (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of Medium
+
+
+% --- Executes on button press in High.
+function High_Callback(hObject, eventdata, handles)
+% hObject    handle to High (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of High
+
+
+% --- Executes on button press in Create.
+function Create_Callback(hObject, eventdata, handles)
+% hObject    handle to Create (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+energyBtn = get(handles.buttongroup,'SelectedObject');
+btnPressed = get(energyBtn,'String');
+assignin('base','btnPressed',btnPressed)
+createPlaylist(sortedByEnergy,btnPressed)
 

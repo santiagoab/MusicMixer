@@ -13,6 +13,7 @@ if n == 2
    waveIn = sum(waveIn, 2) / size(waveIn, 2); 
 end
 features.wave = waveIn;  
+features.sr = sr;
 %% Beat times 
 features.beatPos = beat2(waveIn,sr); %beat2
 beatDuration=features.beatPos(2:end)-features.beatPos(1:end-1);

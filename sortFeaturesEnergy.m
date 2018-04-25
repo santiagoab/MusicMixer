@@ -5,7 +5,7 @@ Acell = struct2cell(features);
 sz = size(Acell);
 Acell = reshape(Acell, sz(1), []);
 Acell = Acell';  
-Acell = sortrows(Acell, 8);
+Acell = sortrows(Acell, 9);
 Acell = reshape(Acell', sz);
 sortedByEnergy = cell2struct(Acell, Afields, 1);
 

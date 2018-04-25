@@ -10,8 +10,18 @@ for i=1:length(songs)
     hold on
 end
 
-bpmNormalized = [features.bpm]/norm([features.bpm]);
-powerNormalized = [features.power]/norm([features.power]);
+disp('Song features extracted succesfully');
+
+%Normalize features
+bpmNormalized = ([features.bpm] - min([features.bpm])) / ( max([features.bpm]) - min([features.bpm]) );
+powerNormalized = ([features.power] - min([features.power])) / ( max([features.power]) - min([features.power]) );
+
+%save into features struct
+bpmNormalized = num2cell(bpmNormalized');
+powerNormalized = num2cell(powerNormalized');
+
+[features(:).bpmNormalized] = deal(bpmNormalized{:});
+[features(:).powerNormalized] = deal(powerNormalized{:});
 
 end
 

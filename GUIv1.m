@@ -136,5 +136,7 @@ function Create_Callback(hObject, eventdata, handles)
 energyBtn = get(handles.buttongroup,'SelectedObject');
 btnPressed = get(energyBtn,'String');
 assignin('base','btnPressed',btnPressed)
-createPlaylist(sortedByEnergy,btnPressed)
+sortedByEnergy = evalin('base', 'sortedByEnergy');
+playlistSongs = createPlaylist(sortedByEnergy,btnPressed);
+assignin('base','playlistSongs',playlistSongs)
 

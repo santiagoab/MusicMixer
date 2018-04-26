@@ -48,8 +48,9 @@ features.energyStart=features.energyTime(max(1,round(features.beatPos*sr/ffthop)
 
 %% Energy power
 eng = features.energyTime;
+eng = eng - mean(eng);
 sv = eng.* eng;
-dp = sum(sv);     % suma de quadrados, producto escalar
+dp = sum(sv) / length(sv);     % suma de quadrados, producto escalar
 features.power = sqrt(dp);   % sqrt del producto escalar
 
 %% metrical position

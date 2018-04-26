@@ -1,6 +1,8 @@
 addpath('/Users/alfonso/matlab/phaseVocoder')
 %% 
 doPlots=0;
+dirOutput='./out/';
+
 
 %% -------- Load first song of the transition
 fileName{1}=drawnPlaylist(1).name;
@@ -217,8 +219,8 @@ for iTrack=2:length(drawnPlaylist)
 %     fprintf(fid, '%s', jsonString);
 %     fclose(fid);  
 %     
-%     %save processed track and beatPos
-%     audiowrite(waveOut,44100, [dir fileName{1} '_p.wav']);
+     %save processed track and beatPos
+     audiowrite([dirOutput fileName{2} '_p.wav'], waveOut,44100 );
 %     savetoWavesurfer(dir, [fileName{1} '_p'], beatPosOut);
 %     
 %     % save to JSON
@@ -267,8 +269,7 @@ middle=middle-drawnPlaylist(iTrack).beatPos(lastTrack.transitionLastBeat+1)+last
 beatPosOut=[firstTr middle];
 
 %save processed track and beatPos
-directory='./out/';
-audiowrite([directory fileName{2} '_p.wav'], waveOut,44100 );
+audiowrite([dirOutput fileName{2} '_p.wav'], waveOut,44100 );
 %savetoWavesurfer(dir, [fileName{2} '_p'], beatPosOut);
 % save to JSON
 %jsonString=savejson('',round(beatPosOut*44100));

@@ -220,7 +220,7 @@ for iTrack=2:length(drawnPlaylist)
 %     fclose(fid);  
 %     
      %save processed track and beatPos
-     audiowrite([dirOutput fileName{2} '_p.wav'], waveOut,44100 );
+     audiowrite([dirOutput fileName{1} '_p.wav'], waveOut,44100 );
 %     savetoWavesurfer(dir, [fileName{1} '_p'], beatPosOut);
 %     
 %     % save to JSON

@@ -36,7 +36,7 @@ for iTrack=2:length(drawnPlaylist)
     %descriptors(2).beatDuration = drawnPlaylist(iTrack).beatDuration;
     %descriptors(2).
 
-    [trBeatIdx]=getBestTransitionBeatPos(drawnPlaylist(iTrack-1:iTrack));
+    [trBeatIdx]=round(getBestTransitionBeatPos(drawnPlaylist(iTrack-1:iTrack)));
 
     
     %playListOut{iTrack}.beat=trBeatIdx; %0 is the number of beats int the first transition
@@ -267,7 +267,8 @@ middle=middle-drawnPlaylist(iTrack).beatPos(lastTrack.transitionLastBeat+1)+last
 beatPosOut=[firstTr middle];
 
 %save processed track and beatPos
-audiowrite(waveOut,44100, [dir fileName{2} '_p.wav']);
+directory='./out/';
+audiowrite([directory fileName{2} '_p.wav'], waveOut,44100 );
 %savetoWavesurfer(dir, [fileName{2} '_p'], beatPosOut);
 % save to JSON
 %jsonString=savejson('',round(beatPosOut*44100));

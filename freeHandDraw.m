@@ -1,5 +1,5 @@
 function [xCoordinates,yCoordinates] = freeHandDraw()
-
+title('Draw the energy curve')
 hFH = imfreehand('Closed',false);
 
 % Get the xy coordinates of drawing.

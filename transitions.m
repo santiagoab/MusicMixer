@@ -1,7 +1,6 @@
-addpath('/Users/alfonso/matlab/phaseVocoder')
+addpath('C:\Users\SANTI\Desktop\MusicMixer\phaseVocoder')
 %% 
 doPlots=0;
-dirOutput='./out/';
 
 
 %% -------- Load first song of the transition
@@ -15,7 +14,7 @@ descriptors(1).beatDuration = drawnPlaylist(1).beatDuration;
 
 
 
-%% for each song ...
+%% clear var
 clear lastTrack
 
 for iTrack=2:length(drawnPlaylist)
@@ -193,17 +192,19 @@ for iTrack=2:length(drawnPlaylist)
     
     %%
     if (exist('lastTrack','var'))
-        waveOut=[lastTrack.inTransition waveIn{1}(lastTrack.transitionLastSample+1:startSamples(1))' waveTransOut{1}];
+        waveOut=[lastTrack.prev waveIn{1}(lastTrack.transitionLastSample+1:startSamples(1))' waveTransOut{1}+waveTransOut{2}];
         firstTr=lastTrack.tranNewBeatPos(1:end-1);
         middle=drawnPlaylist(iTrack-1).beatPos(lastTrack.transitionLastBeat+1:end-trBeatIdx+1);
         middle=middle-drawnPlaylist(iTrack-1).beatPos(lastTrack.transitionLastBeat+1)+lastTrack.tranNewBeatPos(end); %change offset given by last stretch
         secondTr=cumsum(rampDuration(1:end-1))+middle(end);
         beatPosOut=[firstTr middle secondTr];
     else %first and second songs
-        waveOut=[waveIn{1}(1:startSamples(1))' waveTransOut{1}];
+        waveOut=[waveIn{1}(1:startSamples(1))' waveTransOut{1}+waveTransOut{2}];
         idxFirstBeatInTransition=length(drawnPlaylist(iTrack-1).beatPos)-trBeatIdx+1;
         trStart=drawnPlaylist(iTrack-1).beatPos(idxFirstBeatInTransition); %it is the same as start of the first beat in the transition 
         beatPosOut=[drawnPlaylist(iTrack-1).beatPos(1:idxFirstBeatInTransition) cumsum(rampDuration(1:end-1))+ trStart]; %remove last element of rampDuration as is the end of the last beat
+        
+        
     end
     
 %     %compute Beat similarity excluding transitions
@@ -220,7 +221,7 @@ for iTrack=2:length(drawnPlaylist)
 %     fclose(fid);  
 %     
      %save processed track and beatPos
-     audiowrite([dirOutput fileName{1} '_p.wav'], waveOut,44100 );
+     
 %     savetoWavesurfer(dir, [fileName{1} '_p'], beatPosOut);
 %     
 %     % save to JSON
@@ -246,7 +247,7 @@ for iTrack=2:length(drawnPlaylist)
         y=y+drawnPlaylist(iTrack-1).beatPos(firstBeatTr);
         plot(t,y,'x-') %position of the beats of the second song (respet the zero seconds at the begining of the first song)
     end
-
+    lastTrack.prev = waveOut;
     lastTrack.inTransition=waveTransOut{2};
     lastTrack.transitionLastSample=e(2); %trPosSec(2);
     lastTrack.transitionLastBeat=trBeatIdx; 
@@ -255,41 +256,14 @@ for iTrack=2:length(drawnPlaylist)
 
 end
 
-%save last Track
-% drawnPlaylist(iTrack-1)=drawnPlaylist(iTrack);
-% waveIn{1}=waveIn{2};
-% sr(1)=sr(2);
-% fileName{1}=fileName{2};
 
 %waveOut=[lastTrack.inTransition waveIn{2}(lastTrack.transitionLastSample+1:startSamples(2))'];
-waveOut=[waveTransOut{2} waveIn{2}(e(2):end)'];
+waveOut=[lastTrack.prev waveIn{2}(e(2):end)'];
+
 firstTr=lastTrack.tranNewBeatPos(1:end-1);
 middle=drawnPlaylist(iTrack).beatPos(lastTrack.transitionLastBeat+1:end);
 middle=middle-drawnPlaylist(iTrack).beatPos(lastTrack.transitionLastBeat+1)+lastTrack.tranNewBeatPos(end); %change offset given by last stretch
 beatPosOut=[firstTr middle];
 
 %save processed track and beatPos
-audiowrite([dirOutput fileName{2} '_p.wav'], waveOut,44100 );
-%savetoWavesurfer(dir, [fileName{2} '_p'], beatPosOut);
-% save to JSON
-%jsonString=savejson('',round(beatPosOut*44100));
-%fid=fopen([dir fileName{2} '_p_beats.json'],'w');
-%fprintf(fid, '%s', jsonString);
-%fclose(fid);
-
-% %compute Beat similarity excluding transitions
-% [closest]= compBeatSimilarity(drawnPlaylist(iTrack), [trBeatIdx 0]);
-% 
-% % save JSON
-% jsonString=savejson('',closest);
-% fid=fopen([dir fileName{2} '_p_closest.json'],'w');
-% fprintf(fid, '%s', jsonString);
-% fclose(fid);  
-% 
-%     
-% %save playlist with iformation about the length (in beats) of the
-% % save to JSON
-% jsonString=savejson('',playListOut);
-% fid=fopen([dir 'playlist.json'],'w');
-% fprintf(fid, '%s', jsonString);
-% fclose(fid);
+audiowrite(['3songMix.wav'], waveOut,44100 );

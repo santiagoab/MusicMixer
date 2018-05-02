@@ -30,12 +30,12 @@ fftlen = 2 ^ (round(log(sr*(2048/22050))/log(2)));
 nbin = 12;
 f_ctr = 1000; 
 f_sd = 1; 
-%chromaF = chromagram_IF(waveIn,sr,fftlen,nbin,f_ctr,f_sd);
+chromaF = chromagram_IF(waveIn,sr,fftlen,nbin,f_ctr,f_sd);
 ffthop = fftlen/4;
 sgsrate = sr/ffthop;
-%features.bsChromaF = beatavg(chromaF,features.beatPos*sgsrate);
-%imagesc(descriptors.bsChromaF)
-%plot(descriptors.bsChromaF(1,:))
+features.bsChromaF = beatavg(chromaF,features.beatPos*sgsrate);
+imagesc(features.bsChromaF)
+plot(features.bsChromaF(1,:))
 
 %% MFCC and energy
 %[cepstra,aspectrum,pspectrum] = melfcc(waveIn, sr, 'wintime', fftlen/sr, 'hoptime', ffthop/sr, 'numcep', 12); %careful here, there are two melfcc functions in my path. Use that of labrosa/rastamaa

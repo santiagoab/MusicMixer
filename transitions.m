@@ -1,4 +1,5 @@
-addpath('C:\Users\SANTI\Desktop\MusicMixer\phaseVocoder')
+%%addpath('C:\Users\SANTI\Desktop\MusicMixer\phaseVocoder')
+addpath('/Users/alfonso/matlab/phaseVocoder')
 %% 
 doPlots=0;
 

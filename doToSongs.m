@@ -1,7 +1,11 @@
+%{
+[songs, folder] = getMusicFiles();
+features = doToSongs(folder,songs);
+%}
 function features = doToSongs(folder,songs)
 
 for i=1:length(songs)
-    disp([folder songs(i).name]);
+    %disp([folder songs(i).name]);
     features(i) = computeFeatures(folder,songs(i).name); 
     scatter([features(i).bpm],[features(i).power]);
     text([features(i).bpm],[features(i).power], features(i).name, 'horizontal','left', 'vertical','bottom','FontSize',8);

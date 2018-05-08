@@ -2,7 +2,8 @@ function [listing,folder] = getMusicFiles()
 selpath = uigetdir;
 %contents(3).name;
 folder = [selpath filesep]; %Add needed \ to path
-listing = dir(selpath);
+%listing = dir(selpath);
+listing = dir([selpath, '/*.mp3']) %just look for .mp3 to avoid loading .mat
 
 inds = [];
 n    = 0;

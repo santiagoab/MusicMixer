@@ -13,8 +13,8 @@ range = 0.1;
 %% weights for song parameters / next song decision
 wegy = 1; %energy is normalized
 wbpm = 1; %bpm is normalized
-wkey = 1; %key range 1 - 12
-wmode = 1; %mode range 1 - 2
+wkey = 1; %key is normalized
+wmode = 1; %mode is normalized
 
 %%
 
@@ -39,8 +39,8 @@ for i=1:length(newY)
                     currentSong = currentPos;
                     currentSongEner = TempFeatures(currentSong).powerNormalized;
                     currentSongBpm = TempFeatures(currentSong).bpmNormalized;
-                    currentSongKey = TempFeatures(currentSong).key;
-                    currentSongMode = TempFeatures(currentSong).mode;
+                    currentSongKey = TempFeatures(currentSong).keyNormalized;
+                    currentSongMode = TempFeatures(currentSong).modeNormalized;
                     
                     nextPos = position{i};
 
@@ -49,8 +49,8 @@ for i=1:length(newY)
                     nextSong = nextPos(y);
                     nextSongEner = TempFeatures(nextSong).powerNormalized;
                     nextSongBpm = TempFeatures(nextSong).bpmNormalized;
-                    nextSongKey = TempFeatures(nextSong).key;
-                    nextSongMode = TempFeatures(nextSong).mode;
+                    nextSongKey = TempFeatures(nextSong).keyNormalized;
+                    nextSongMode = TempFeatures(nextSong).modeNormalized;
 
                     %% Compute weighted distances between such songs 
                     

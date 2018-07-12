@@ -1,16 +1,6 @@
 function descriptors = compBeatDescriptors(waveIn, sr, startbpm) %dir, fileName)
 
 if nargin < 3;   startbpm = 120; end
-%% -------- Load song
-%{
-dir='D:\projects\FASTQMUL\silentDisco\sounds\';
-dir='/Users/alfonso/myMusic/freakdisco4/';
-fileName = 'HIT ME MIX';
-fileName='01-Ciaocarlia'; 
-fileName='04-ParovStelar-CatGroove'; 
-fileName='03-FreakFandango-GypsySong';
-[waveIn,sr] = audioread([dir fileName '.wav']);
-%}
 
 %% -------- Calculate the beat times
 descriptors.beatPos = beat2(waveIn,sr); %beat2

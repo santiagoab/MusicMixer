@@ -22,7 +22,7 @@ function varargout = GUIv1(varargin)
 
 % Edit the above text to modify the response to help GUIv1
 
-% Last Modified by GUIDE v2.5 21-Apr-2018 21:02:17
+% Last Modified by GUIDE v2.5 07-Jun-2018 03:00:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -139,4 +139,3 @@ assignin('base','btnPressed',btnPressed)
 sortedByEnergy = evalin('base', 'sortedByEnergy');
 playlistSongs = createPlaylist(sortedByEnergy,btnPressed);
 assignin('base','playlistSongs',playlistSongs)
-

@@ -29,7 +29,9 @@ features.beatDuration=[beatDuration beatDuration(end)];
 while bpm > 200
     bpm = bpm/2;    
 end
-
+while bpm < 60
+    bpm = bpm*2;    
+end
 
 features.bpm = bpm;
 %% Chroma features

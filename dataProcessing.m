@@ -76,23 +76,28 @@ for i=1:length(newY)
           
 end
 
-subplot(4,1,1);
-plot(newY)
-title(['Your energy drawing for ' ,num2str(NumSongs), ' songs.']);
+subplot(3,1,1);
+plot(yCoordinates)
+title('Your energy contour drawing');
 
-subplot(4,1,2); 
+subplot(3,1,2);
+plot(newY, 'b--o')
+title(['Your energy drawing for ' ,num2str(NumSongs), ' songs']);
+
+subplot(3,1,3); 
 PlaylistPower = [MixPlaylist.powerNormalized];
-plot(PlaylistPower)
+plot(PlaylistPower, 'r--o')
 title('Created playlist energy distribution');
 
-subplot(4,1,3); 
-Test = [MixPlaylist.bpm];
-plot(Test)
-title('BPM');
 
-subplot(4,1,4); 
-Test2 = [MixPlaylist.key];
-plot(Test2)
-title('Key');
+% subplot(4,1,3); 
+% Test = [MixPlaylist.bpm];
+% plot(Test)
+% title('BPM');
+% 
+% subplot(4,1,4); 
+% Test2 = [MixPlaylist.key];
+% plot(Test2)
+% title('Key');
 
 end
